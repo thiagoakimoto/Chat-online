@@ -8,11 +8,11 @@ HOST = '127.0.0.1'
 PORTA = 9999
 socket_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Função da interface
+# Fnc da interface
 def interface():
     janela = tk.Tk()
     janela.title("Chat Prof Gui")
-    janela.geometry("300x400")
+    janela.geometry("400x500")
 
     texto_chat = scrolledtext.ScrolledText(janela, width=40, height=10)
     texto_chat.pack(pady=10)  # Corrigido de `text_chat.pack` para `texto_chat.pack`
@@ -25,7 +25,7 @@ def interface():
     enviar_button.pack(pady=5)
     return janela, texto_chat, entrada_mensagem
 
-# Função que conecta ao servidor
+# Fnc que conecta ao servidor
 def conectar_server():
     global socket_cliente
     socket_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Corrigido de `sock` para `socket`
@@ -35,11 +35,11 @@ def conectar_server():
     socket_cliente.sendall(nome.encode())
     exibir_mensagem(f"Você entrou no chat como {nome}.")
 
-    # Inicia uma thread para receber mensagens do servidor
+    # Thread para receber mnsg do sv
     thread = threading.Thread(target=receber_mensagem)
     thread.start()
 
-# Função para enviar mensagens
+# Fnc para enviar mensagens
 def enviar_mensagem(mensagem):
     if mensagem:
         entrada_mensagem.delete(0, tk.END)  # Limpa o campo de entrada
