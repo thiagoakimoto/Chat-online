@@ -9,7 +9,14 @@ def recebe_dados(sock_cliente, endereco):
     while True:
             try:
                 mensagem = sock_cliente.recv(1024).decode()
-                print(f"Cliente >> {mensagem}")
+                if mensagem:
+                    print(f"{nome} >> {mensagem}")
+                if mensagem.startswith("/"):
+                     try:
+                          nome_destino, msg_real = mensagem[1:].split(" ", 1)
+                          unicast(f"{nome} (privado): {msg_real}", nome_destino)
+            except ValueError:
+                 sock_cliente.sendall("Formato inválido. Use: /nome_destinatrio (mensagem)" .encode())
             except:
                 print("Erro ao receber mensagem... fechando")
                 sock_cliente.close()
