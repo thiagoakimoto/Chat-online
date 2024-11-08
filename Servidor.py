@@ -20,6 +20,7 @@ def recebe_dados(sock_cliente, endereco):
 
             if mensagem == '#sair':
                 remover_cliente(sock_cliente)
+                break
 
             # Verifica se a mensagem não está vazia
             if mensagem:
@@ -83,9 +84,6 @@ def remover_cliente(sock_cliente):
         sock_cliente.close()  # Fecha a conexão
         broadcast(f"{nome} saiu do chat.", nome)  # Notificação para outros usuários que saiu do chat
 
-        del lista_clientes[sock_cliente]  # Remove o usuário da lista de clientes
-        sock_cliente.close()  # Fecha a conexão com o cliente
-        broadcast(f"{nome} saiu do chat.", nome)  # Notifica os outros usuários sobre a saída
 
 
 # config de host e porta
