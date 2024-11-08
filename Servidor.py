@@ -18,6 +18,9 @@ def recebe_dados(sock_cliente, endereco):
             # Recebe a mensagem do cliente e a decodifica
             mensagem = sock_cliente.recv(1024).decode()
 
+            if mensagem == '#sair':
+                remover_cliente(sock_cliente)
+
             # Verifica se a mensagem não está vazia
             if mensagem:
                 print(f"{nome} >> {mensagem}")
@@ -41,6 +44,7 @@ def recebe_dados(sock_cliente, endereco):
             broadcast(f"{nome} foi desconectado...", " ")  # Nome vazio para indicar que é uma notificação
             remover_cliente(sock_cliente)
             break
+        
 
 
 # # Função para enviar uma mensagem para todos os clientes (exceto o remetente) 
