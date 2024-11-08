@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import scrolledtext
 
 # IP e PORTA do servidor que queremos nos conectar
-HOST = '127.0.0.1'# IP local (localhost), utilizado para testes no mesmo computador 
+HOST = '25.15.75.111'# IP local (localhost), utilizado para testes no mesmo computador 
 PORTA = 9999 # Porta do servidor à qual o cliente se conecta
 socket_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -50,6 +50,8 @@ def enviar_mensagem(mensagem):
             exibir_mensagem(f"Você (privado): {mensagem}")
         else:
             exibir_mensagem(f"Você: {mensagem}")
+        if mensagem == '#sair':
+            exit(0)
 
 # Função para receber mensagens do servidor
 def receber_mensagem():
@@ -63,6 +65,7 @@ def receber_mensagem():
             print("Erro ao receber mensagem... desconectando")
             socket_cliente.close()
             break
+
 
 # Função auxiliar para exibir mensagens na interface
 def exibir_mensagem(mensagem):
