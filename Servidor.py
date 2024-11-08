@@ -4,11 +4,11 @@ import threading
 # Dicionário para armazenar sockets e nomes dos clientes
 lista_clientes = {}
 
-# Fnc para recebimento de mensagens o cliente
 def recebe_dados(sock_cliente, endereco):
-    nome = sock_cliente.recv(50).decode()# Recebe o nome do cliente e o decodifica
+    nome = sock_cliente.recv(50).decode()  # Recebe o nome do cliente e o decodifica
     print(f"Conexão bem sucedida com {nome} via endereço: {endereco}")
     lista_clientes[sock_cliente] = nome  # Armazena o usuário
+    
     # Notifica todos a entrada do novo usuário
     broadcast(f"{nome} entrou no chat.", nome)
     
@@ -25,20 +25,23 @@ def recebe_dados(sock_cliente, endereco):
                 # Verifica se a mensagem é privada (inicia com '/')
                 if mensagem.startswith("/"):
                     try:
-                       
-                        nome_destino, msg_real = mensagem[1:].split(" ", 1)  # Separa o nome do destinatário e a mensagem privada
-                        unicast(f"{nome} (privado): {msg_real}", nome_destino) # Envia a mensagem privada ao destinatário especificado
-                        
+                        # Separa o nome do destinatário e a mensagem privada
+                        nome_destino, msg_real = mensagem[1:].split(" ", 1)
+                        # Envia a mensagem privada ao destinatário especificado
+                        unicast(f"{nome} (privado): {msg_real}", nome_destino)
                     except ValueError:
-
-                          # Caso a mensagem privada esteja em formato incorreto, notifica o usuário
+                        # Caso a mensagem privada esteja em formato incorreto, notifica o usuário
                         sock_cliente.sendall("Formato inválido. Use: /nome_destinatario mensagem".encode())
                 else:
-                    broadcast(f"{nome}: {mensagem}", nome) # Se não for mensagem privada, envia para todos (broadcast)
-        except:
-            broadcast(f"{nome} foi desconectado...")
+                    # Se não for mensagem privada, envia para todos (broadcast)
+                    broadcast(f"{nome}: {mensagem}", nome)
+        except ConnectionResetError:
+            # Notifica a todos que o cliente foi desconectado e o remove da lista
+            print("exept rodando")
+            broadcast(f"{nome} foi desconectado...", " ")  # Nome vazio para indicar que é uma notificação
             remover_cliente(sock_cliente)
             break
+
 
 # # Função para enviar uma mensagem para todos os clientes (exceto o remetente) 
 def broadcast(mensagem, nome):
@@ -82,7 +85,7 @@ def remover_cliente(sock_cliente):
 
 
 # config de host e porta
-HOST = '127.0.0.1'# IP local para testes (localhost)
+HOST = '25.15.75.111'# IP local para testes (localhost)
 PORTA = 9999  # Porta do servidor para conexão dos clientes
 
 # # Cria o socket do servidor para aceitar conexões TCP (permite que dispostivos e programas troquem mensagens em uma rede) 
