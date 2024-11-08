@@ -36,7 +36,7 @@ def recebe_dados(sock_cliente, endereco):
                 else:
                     broadcast(f"{nome}: {mensagem}", nome) # Se não for mensagem privada, envia para todos (broadcast)
         except:
-            print(f"{nome} foi desconectado...")
+            broadcast(f"{nome} foi desconectado...")
             remover_cliente(sock_cliente)
             break
 
@@ -66,14 +66,20 @@ def unicast(mensagem, nome_destino):
                  # Caso o destinatário não seja encontrado, notifica no servidor
     print(f"Usuário {nome_destino} não encontrado para mensagem privada.")
 
-# Função que remove o cliente da lista e notifica outros usuários sobre a saída
+
 def remover_cliente(sock_cliente):
     nome = lista_clientes.get(sock_cliente) # Obtém o nome do cliente a partir do socket
     if nome:
         print(f"Removendo {nome} da lista de clientes.")
+
         del lista_clientes[sock_cliente]  # remove o usuário
         sock_cliente.close()  # Fecha a conexão
         broadcast(f"{nome} saiu do chat.", nome)  # Notificação para outros usuários que saiu do chat
+
+        del lista_clientes[sock_cliente]  # Remove o usuário da lista de clientes
+        sock_cliente.close()  # Fecha a conexão com o cliente
+        broadcast(f"{nome} saiu do chat.", nome)  # Notifica os outros usuários sobre a saída
+
 
 # config de host e porta
 HOST = '127.0.0.1'# IP local para testes (localhost)
