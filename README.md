@@ -1,4 +1,5 @@
 Chat online
+
 Visão geral do projeto
 Este projeto foi desenvolvido em novembro de 2024, em colaboração com colegas de classe, como parte de uma série de desafios para desenvolver nossas habilidades em Python. 
 
